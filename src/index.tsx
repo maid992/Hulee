@@ -1,4 +1,5 @@
 import './index.scss';
+import { hot } from 'react-hot-loader' 
 
 import { Provider } from 'mobx-react';
 import * as React from 'react';
@@ -15,4 +16,4 @@ const render = Component => {
     )
 }
 
-render(App)
+render(hot(module)(App))
