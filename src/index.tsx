@@ -1,19 +1,30 @@
-import './index.scss';
-import { hot } from 'react-hot-loader' 
+import React, { Component, Children } from 'react'
+import ReactDOM from 'react-dom'
+import { AppState } from './AppState'
+import { observer } from 'mobx-react'
+import { Provider } from './consume'
+import { ProjectTable } from './ProjectTable';
 
-import { Provider } from 'mobx-react';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+// first we will make a new context
 
-import { App } from './App';
+const appState = new AppState()
 
-const render = Component => {
-    ReactDOM.render(
-        <Provider>
-            <Component />
-        </Provider>,
-        document.getElementById('app') as HTMLElement
+@observer
+class App extends React.Component {
+  render () {
+    return (
+      <div>
+        <ProjectTable />
+      </div>
     )
+  }
 }
 
-render(hot(module)(App))
+ReactDOM.render(
+  <Provider state={appState}>
+    <App />
+  </Provider>,
+  document.getElementById('app') as HTMLElement
+)
+
+// window.state = state
