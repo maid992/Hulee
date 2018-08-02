@@ -1,30 +1,24 @@
-import React, { Component, Children } from 'react'
+import * as React from 'react'
 import ReactDOM from 'react-dom'
-import { AppState } from './AppState'
-import { observer } from 'mobx-react'
-import { Provider } from './consume'
-import { ProjectTable } from './ProjectTable';
+import { App } from './App';
+const { AppContainer } = require('react-hot-loader')
 
-// first we will make a new context
-
-const appState = new AppState()
-
-@observer
-class App extends React.Component {
-  render () {
-    return (
-      <div>
-        <ProjectTable />
-      </div>
-    )
-  }
+function render (Component: any) {
+  ReactDOM.render(
+    <AppContainer>
+      <Component/>
+    </AppContainer>,
+    document.getElementById('app') as HTMLElement
+  )
 }
 
-ReactDOM.render(
-  <Provider state={appState}>
-    <App />
-  </Provider>,
-  document.getElementById('app') as HTMLElement
-)
+render(App)
 
-// window.state = state
+if ((module as any).hot) {
+  (module as any).hot.accept('./App', () => {
+    const NextApp = require<{ App: typeof App }>('./App').App
+    render(NextApp)
+  })
+}
+
+// window.state = appState

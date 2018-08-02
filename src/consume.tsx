@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AppState } from './AppState';
 
 /**
  * Decorator to form a HOC that acts like a react context consumer.
@@ -45,7 +46,11 @@ export function consume<ContextProps> (Consumer: React.Consumer<ContextProps>) {
 
 export const AppContext = React.createContext({})
 
-export class Provider extends React.Component<{state: {}}> {
+export type AppContextProps = {
+  state?: AppState
+}
+
+export class Provider extends React.Component<{state?: {}}> {
   render () {
     const state = this.props.state
     return (

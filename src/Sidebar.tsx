@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Layout, Menu, Icon } from 'antd'
-import { AppState } from './AppState'
-import { consume, AppContext } from './consume';
+import { consume, AppContext, AppContextProps } from './consume'
 
 const { SubMenu } = Menu
 const { Sider } = Layout
@@ -12,11 +11,10 @@ const { Sider } = Layout
 // }
 
 @consume(AppContext.Consumer)
-export class Sidebar extends React.Component<{ state?: AppState }> {
+export class Sidebar extends React.Component<AppContextProps> {
   handleClick = (e) => {
     const value = e.item.props.children
-    console.log(this.props.state.count)
-    this.props.state.changePage(value)
+    this.props.state.locationState.changePage(value)
   }
 
   render () {
