@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer } from 'mobx-react'
 import { consume, AppContext, AppContextProps } from './consume'
-import { Button, Form, Input, Modal, Select } from 'antd'
+import { Button, Form, Input, Modal, Select, Layout } from 'antd'
 import { TimeTrackingTable } from './TimeTrackingTable'
 
 const Option = Select.Option
@@ -14,12 +14,13 @@ export class TimeTracking extends React.Component<AppContextProps> {
     hourlyRate: null,
     currency: 'EUR',
     visible: false,
-    selectedProject: ''
+    selectedProject: '',
+    activity: '',
   }
 
   onSubmit = (e) => {
     e.preventDefault()
-    this.props.state.timeTrackingState.addProject(
+    this.props.timeTrackingState.addProject(
       this.state.project,
       this.state.hourlyRate,
       this.state.currency
@@ -27,43 +28,74 @@ export class TimeTracking extends React.Component<AppContextProps> {
     this.setState({ project: '', visible: false, hourlyRate: null })
   }
 
+  startCounter = () => {
+    this.props.counterState.timer = setInterval(() => {
+        this.props.counterState.startCounter()
+      }, 1000)
+  }
+
+  stopCounter = () => {
+    clearInterval(this.props.counterState.timer)
+    this.props.counterState.resetCounter()
+  }
+
   onChange = (e) => {
     this.setState({ [e.currentTarget.name]: e.target.value })
   }
 
-  onSelectChange = (value) => {
+  onSelectChange = (value: string) => {
     this.setState({ selectedProject: value })
-    console.log("SELECT: ", value)
+    console.log('SELECT: ', value)
   }
 
-  addActivity = (e) => {
+  addActivity = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    const addA = this.props.state.timeTrackingState.addActivity
-    addA('faklingX', 33.11, this.state.selectedProject)
+    const addA = this.props.timeTrackingState.addActivity
+    addA(this.state.activity, 33.11, this.state.selectedProject)
   }
 
   render () {
-    const projects = this.props.state.timeTrackingState.getAllProjects
-    
+    const { getAllProjects, getFirstProject, projects } = this.props.timeTrackingState
+    const defaultValue = projects ? getFirstProject[0] : 'No Projects'
+
     return (
       <React.Fragment>
-        <h2>{this.props.state.locationState.currentPage}</h2>
-        <Button htmlType="submit" onClick={() => this.setState({ visible: true })}>
-          Create new Project
+        <h2>{this.props.locationState.currentPage}</h2>
+        <h2>{this.props.counterState.time}--{this.props.counterState.startTime}</h2>
+        <Button htmlType="submit" onClick={this.startCounter}>
+          START
+        </Button>
+        <Button htmlType="submit" onClick={this.stopCounter}>
+          STOP
         </Button>
         <Form onSubmit={this.addActivity}>
+          <Input
+            name="activity"
+            value={this.state.activity}
+            placeholder="What are you working on today?"
+            onChange={this.onChange}
+          />
+          <Select
+            notFoundContent="Please Add Project"
+            placeholder="Select Project"
+            onChange={this.onSelectChange}
+            defaultValue={defaultValue}
+          >
+            {getAllProjects.map((pr) => <Option key={pr.name}>{pr.name}</Option>)}
+          </Select>
           <Button htmlType="submit" onClick={this.addActivity}>
             Add Activity
           </Button>
-          <Select onChange={this.onSelectChange} >
-            {projects.map(pr => <Option key={pr.name}>{pr.name}</Option>)}
-          </Select>
         </Form>
+        <br/>
+        <Button htmlType="submit" onClick={() => this.setState({ visible: true })}>
+          Create new Project
+        </Button>
         <Modal
           visible={this.state.visible}
           title="Create New Project"
           onOk={this.onSubmit}
-          okText='Create Project'
+          okText="Create Project"
           onCancel={() => this.setState({ visible: false })}
         >
           <Form onSubmit={this.onSubmit}>
@@ -79,7 +111,9 @@ export class TimeTracking extends React.Component<AppContextProps> {
             </Form.Item>
           </Form>
         </Modal>
-        <TimeTrackingTable />
+        <Layout.Content>
+          <TimeTrackingTable />
+        </Layout.Content>
       </React.Fragment>
     )
   }

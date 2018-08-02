@@ -2,15 +2,21 @@ import * as React from 'react'
 import { Provider } from './consume'
 import { ManagmentApp } from './ManagmentApp'
 import { AppState } from './AppState'
-import { observer } from 'mobx-react';
+import { observer } from 'mobx-react'
 
 const appState = new AppState()
+
+const state = {
+  timeTrackingState: appState.timeTrackingState,
+  locationState: appState.locationState,
+  counterState: appState.counterState
+}
 
 @observer
 export class App extends React.Component {
   render () {
     return (
-      <Provider state={appState}>
+      <Provider {...state}>
         <ManagmentApp />
       </Provider>
     )

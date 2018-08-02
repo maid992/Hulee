@@ -1,7 +1,8 @@
-import { Layout, Table, Dropdown, Icon, Badge, Button } from 'antd'
+import { Layout, Table, Badge, Button } from 'antd'
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import { consume, AppContext, AppContextProps } from './consume'
+import './table.scss'
 
 @consume(AppContext.Consumer)
 @observer
@@ -16,7 +17,7 @@ export class TimeTrackingTable extends React.Component<AppContextProps> {
       }
     ]
     const data = []
-    const { projects } = this.props.state.timeTrackingState
+    const { projects } = this.props.timeTrackingState
 
     console.log('TABLE_DATA: ', projects)
     projects.forEach((pr) => data.push({ key: pr.id, name: pr.name }))
@@ -27,7 +28,7 @@ export class TimeTrackingTable extends React.Component<AppContextProps> {
           className="components-table-demo-nested"
           columns={columns}
           expandedRowRender={(record, index, indent, expaned) =>
-            expaned ? <ExpandedRowRender record={record} /> : null}
+           expaned ? <ExpandedRowRender record={record} /> : null}
           dataSource={data}
           pagination={false}
           showHeader={false}
@@ -70,7 +71,7 @@ class ExpandedRowRender extends React.Component<AppContextProps & { record?: Rec
     ]
 
     const data = []
-    const activities = this.props.state.timeTrackingState.getProjectActivities(
+    const activities = this.props.timeTrackingState.getProjectActivities(
       this.props.record.name
     )
 
@@ -78,7 +79,7 @@ class ExpandedRowRender extends React.Component<AppContextProps & { record?: Rec
       data.push({ key: pr.id, name: pr.description, date: pr.date, record: pr.projectId })
     )
 
-    return <Table columns={columns} dataSource={data} size="middle" pagination={false} />
+    return <Table columns={columns} dataSource={data} size="small" pagination={false} />
   }
 }
 

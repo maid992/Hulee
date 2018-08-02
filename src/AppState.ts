@@ -1,11 +1,11 @@
-import { observable, action, computed } from 'mobx'
+import { observable, action, computed, reaction, autorun } from 'mobx'
+import { TimeTrackingState } from './TimeTrackingState'
 
 export class AppState {
   timeTrackingState = new TimeTrackingState()
   locationState = new LocationState()
+  counterState = new CounterState()
 }
-
-type Slug = string | number
 
 export class LocationState {
   @observable currentPage: string = 'Projects'
@@ -20,77 +20,20 @@ export class LocationState {
   }
 }
 
-export class TimeTrackingState {
-  @observable projects = new Map<Slug, ProjectModel>()
-  @observable activities = new Map<Slug, ActivityModel>()
+export class CounterState {
+  @observable time: number = 0
+  @observable timer: NodeJS.Timer
+  startTime
+  endTime
+  @observable working: boolean = true
 
-  constructor() {
-    this.projects.set(projekt.name, projekt)
-    this.projects.set(projekt1.name, projekt1)
-    this.activities.set(aktiviti.description, aktiviti)
-    this.activities.set(aktiviti3.description, aktiviti3)
-    this.activities.set(aktiviti2.description, aktiviti2)
-    console.log('PROJECTS: ', [...this.projects.entries()])
+  @action
+  startCounter () {
+    this.time++
   }
 
   @action
-  addProject (name: string, hRate: number, currency: string) {
-    const project = new ProjectModel(name, hRate, currency)
-    this.projects.set(project.id, project)
-  }
-
-  @action
-  addActivity = (description: string, date: number, projectId: string) => {
-    const activity = new ActivityModel(description, date, projectId)
-    this.activities.set(projectId, activity)
-  }
-
-  get getAllProjects () {
-    const projects = Array.from(this.projects.values())
-    console.log('PROJECTSSS: ', projects)
-    return projects
-  }
-
-  getProjectActivities (projectId) {
-    const acty = Array.from(this.activities.values())
-    console.log(acty)
-    return acty.filter(a => a.projectId === projectId)
+  resetCounter  () {
+    return this.time = 0
   }
 }
-
-class ProjectModel {
-  name: string
-  id: number
-  hRate: number
-  currency: string
-
-  constructor(name, hRate, currency) {
-    this.id = Math.random() * 100
-    this.name = name
-    this.hRate = hRate
-    this.currency = currency
-  }
-}
-
-class ActivityModel {
-  id: number
-  projectId: string
-  description: string
-  date: string
-  workedFrom: number
-  workedTo: number
-  time: number
-
-  constructor(description, date, projectId) {
-    this.id = Math.random() * 100
-    this.description = description
-    this.date = date
-    this.projectId = projectId
-  }
-}
-
-const projekt = new ProjectModel('MyPortfolio', 33, 'EUR')
-const projekt1 = new ProjectModel('WorkManagmentSite', 33, 'EUR')
-const aktiviti = new ActivityModel('fixingNavBar', 22.11, 'MyPortfolio')
-const aktiviti2 = new ActivityModel('fixingLoading', 22.11, 'MyPortfolio')
-const aktiviti3 = new ActivityModel('fixingAvatar', 22.11, 'WorkManagmentSite')

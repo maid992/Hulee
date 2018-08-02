@@ -14,7 +14,7 @@ const { Sider } = Layout
 export class Sidebar extends React.Component<AppContextProps> {
   handleClick = (e) => {
     const value = e.item.props.children
-    this.props.state.locationState.changePage(value)
+    this.props.locationState.changePage(value)
   }
 
   render () {
