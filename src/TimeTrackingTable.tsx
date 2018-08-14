@@ -76,7 +76,7 @@ class ExpandedRowRender extends React.Component<AppContextProps & { record?: Rec
     )
 
     activities.map((pr) =>
-      data.push({ key: pr.id, name: pr.description, date: pr.date, record: pr.projectId })
+      data.push({ key: pr.id, name: pr.description, date: pr.date, record: pr.projectName })
     )
 
     return <Table columns={columns} dataSource={data} size="small" pagination={false} />

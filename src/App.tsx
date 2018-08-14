@@ -9,7 +9,7 @@ const appState = new AppState()
 const state = {
   timeTrackingState: appState.timeTrackingState,
   locationState: appState.locationState,
-  counterState: appState.counterState
+  timerState: appState.timerState
 }
 
 @observer

@@ -1,10 +1,17 @@
-import { observable, action, computed, reaction, autorun } from 'mobx'
+import { observable } from 'mobx'
 import { TimeTrackingState } from './TimeTrackingState'
+import { TimerState } from './TimerState';
 
 export class AppState {
-  timeTrackingState = new TimeTrackingState()
-  locationState = new LocationState()
-  counterState = new CounterState()
+  timeTrackingState: TimeTrackingState
+  locationState: LocationState
+  timerState: TimerState
+
+  constructor () {
+    this.timeTrackingState = new TimeTrackingState()
+    this.locationState = new LocationState()
+    this.timerState = new TimerState(this)
+  }
 }
 
 export class LocationState {
@@ -17,23 +24,5 @@ export class LocationState {
 
   changePage (page: string) {
     this.currentPage = page
-  }
-}
-
-export class CounterState {
-  @observable time: number = 0
-  @observable timer: NodeJS.Timer
-  startTime
-  endTime
-  @observable working: boolean = true
-
-  @action
-  startCounter () {
-    this.time++
-  }
-
-  @action
-  resetCounter  () {
-    return this.time = 0
   }
 }

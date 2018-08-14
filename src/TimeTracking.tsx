@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import { consume, AppContext, AppContextProps } from './consume'
 import { Button, Form, Input, Modal, Select, Layout } from 'antd'
 import { TimeTrackingTable } from './TimeTrackingTable'
+import { Timer } from './Timer'
 
 const Option = Select.Option
 
@@ -14,8 +15,7 @@ export class TimeTracking extends React.Component<AppContextProps> {
     hourlyRate: null,
     currency: 'EUR',
     visible: false,
-    selectedProject: '',
-    activity: '',
+    activity: ''
   }
 
   onSubmit = (e) => {
@@ -28,47 +28,30 @@ export class TimeTracking extends React.Component<AppContextProps> {
     this.setState({ project: '', visible: false, hourlyRate: null })
   }
 
-  startCounter = () => {
-    this.props.counterState.timer = setInterval(() => {
-        this.props.counterState.startCounter()
-      }, 1000)
-  }
-
-  stopCounter = () => {
-    clearInterval(this.props.counterState.timer)
-    this.props.counterState.resetCounter()
-  }
-
   onChange = (e) => {
-    this.setState({ [e.currentTarget.name]: e.target.value })
+    this.setState({ [e.currentTarget.name]: e.target.value }, () =>
+      this.props.timeTrackingState.setCurrentActivity(this.state.activity)
+    )
   }
 
   onSelectChange = (value: string) => {
-    this.setState({ selectedProject: value })
-    console.log('SELECT: ', value)
-  }
+    const name = value.toString()
+    this.props.timeTrackingState.setCurrentProject(name)
 
-  addActivity = (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    const addA = this.props.timeTrackingState.addActivity
-    addA(this.state.activity, 33.11, this.state.selectedProject)
+    console.log('SELECT: ', typeof value)
   }
 
   render () {
-    const { getAllProjects, getFirstProject, projects } = this.props.timeTrackingState
-    const defaultValue = projects ? getFirstProject[0] : 'No Projects'
+    const { getAllProjects, getCurrentProject } = this.props.timeTrackingState
+
+    // const defaultValue = getLastProject === undefined ? '' : getLastProject.name
 
     return (
       <React.Fragment>
         <h2>{this.props.locationState.currentPage}</h2>
-        <h2>{this.props.counterState.time}--{this.props.counterState.startTime}</h2>
-        <Button htmlType="submit" onClick={this.startCounter}>
-          START
-        </Button>
-        <Button htmlType="submit" onClick={this.stopCounter}>
-          STOP
-        </Button>
-        <Form onSubmit={this.addActivity}>
+        <Timer />
+        <br />
+        <Form>
           <Input
             name="activity"
             value={this.state.activity}
@@ -77,17 +60,14 @@ export class TimeTracking extends React.Component<AppContextProps> {
           />
           <Select
             notFoundContent="Please Add Project"
-            placeholder="Select Project"
             onChange={this.onSelectChange}
-            defaultValue={defaultValue}
+            key={getCurrentProject}
+            defaultValue={getCurrentProject}
           >
             {getAllProjects.map((pr) => <Option key={pr.name}>{pr.name}</Option>)}
           </Select>
-          <Button htmlType="submit" onClick={this.addActivity}>
-            Add Activity
-          </Button>
         </Form>
-        <br/>
+        <br />
         <Button htmlType="submit" onClick={() => this.setState({ visible: true })}>
           Create new Project
         </Button>
