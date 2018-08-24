@@ -1,13 +1,13 @@
 import React from 'react'
 import { observer } from 'mobx-react'
-import { consume, AppContext, AppContextProps } from './consume'
+import { AppContextProps, consumeStore } from './consume'
 import { Button, Form, Input, Modal, Select, Layout } from 'antd'
-import { TimeTrackingTable } from './TimeTrackingTable'
 import { Timer } from './Timer'
+import { TimeEntriesListContainer } from './TimeEntriesListContainer';
 
 const Option = Select.Option
 
-@consume(AppContext.Consumer)
+@consumeStore
 @observer
 export class TimeTracking extends React.Component<AppContextProps> {
   state = {
@@ -29,22 +29,21 @@ export class TimeTracking extends React.Component<AppContextProps> {
   }
 
   onChange = (e) => {
-    this.setState({ [e.currentTarget.name]: e.target.value }, () =>
-      this.props.timeTrackingState.setCurrentActivity(this.state.activity)
-    )
+    this.setState({ [e.currentTarget.name]: e.target.value }, () => {
+      // this.props.timeTrackingState.setCurrentActivity(this.state.activity)
+      this.props.timerState.changeDescription(this.state.activity)
+      
+    })
   }
 
-  onSelectChange = (value: string) => {
-    const name = value.toString()
-    this.props.timeTrackingState.setCurrentProject(name)
-
-    console.log('SELECT: ', typeof value)
+  onSelectChange = (value) => {
+    this.props.timeTrackingState.setCurrentProject(value.key)
+    this.props.timerState.changeProject(value.key)
+    console.log('SELECT: ', value)
   }
 
   render () {
-    const { getAllProjects, getCurrentProject } = this.props.timeTrackingState
-
-    // const defaultValue = getLastProject === undefined ? '' : getLastProject.name
+    const { getAllProjects } = this.props.timeTrackingState
 
     return (
       <React.Fragment>
@@ -59,12 +58,12 @@ export class TimeTracking extends React.Component<AppContextProps> {
             onChange={this.onChange}
           />
           <Select
+            labelInValue
             notFoundContent="Please Add Project"
             onChange={this.onSelectChange}
-            key={getCurrentProject}
-            defaultValue={getCurrentProject}
+            defaultValue='Add Something'
           >
-            {getAllProjects.map((pr) => <Option key={pr.name}>{pr.name}</Option>)}
+            {getAllProjects.map((pr) => <Option key={pr.id}>{pr.name}</Option>)}
           </Select>
         </Form>
         <br />
@@ -92,7 +91,8 @@ export class TimeTracking extends React.Component<AppContextProps> {
           </Form>
         </Modal>
         <Layout.Content>
-          <TimeTrackingTable />
+          <br/>
+          <TimeEntriesListContainer />
         </Layout.Content>
       </React.Fragment>
     )

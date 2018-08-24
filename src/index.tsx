@@ -1,7 +1,11 @@
+
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import { App } from './App';
 const { AppContainer } = require('react-hot-loader')
+
+import './styles/ant.less'
+import './styles/index.scss'
 
 function render (Component: any) {
   ReactDOM.render(

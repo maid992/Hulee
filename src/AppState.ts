@@ -1,16 +1,18 @@
-import { observable } from 'mobx'
-import { TimeTrackingState } from './TimeTrackingState'
+import { observable, when, autorun, reaction } from 'mobx'
+import { TimeTrackingStore } from './TimeTrackingStore'
 import { TimerState } from './TimerState';
 
 export class AppState {
-  timeTrackingState: TimeTrackingState
-  locationState: LocationState
-  timerState: TimerState
+  locationState: LocationState = new LocationState()
+  timerState: TimerState = new TimerState(this)
+  timeTrackingState: TimeTrackingStore = new TimeTrackingStore(this)
 
   constructor () {
-    this.timeTrackingState = new TimeTrackingState()
-    this.locationState = new LocationState()
-    this.timerState = new TimerState(this)
+  //   reaction(() => this.timerState.description.length, () => {
+  //   this.timerState.setTimeEntry()
+  //   console.log('XXXXX: ', this.timerState.timeEntry)}
+  // )
+
   }
 }
 

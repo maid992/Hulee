@@ -1,30 +1,88 @@
-import { observable, action, computed, runInAction } from 'mobx'
+import { observable, action, computed, runInAction, autorun, reaction } from 'mobx'
 import * as moment from 'moment'
-import {AppState} from './AppState'
+import { AppState } from './AppState'
+import { TimeEntryProps, TimeEntryModel } from './TimeTrackingStore'
 
 export class TimerState {
   @observable timer: Timer
-  @observable startTime: moment.Moment
-  @observable endTime: moment.Moment
+  @observable startTime: string
+  @observable endTime: string
   @observable isRunning: boolean = false
-  appState: AppState
+
+  @observable description: string
+  @observable project: number = null
+  @observable billable: boolean
+  @observable tag: string
+
+  private appState: AppState
+
+  /**
+   * autocomplete
+   * changeDescription
+   * changeBillable
+   * changeProjectTask
+   * changeStart
+   * changeStop
+   * changeStartStop
+   * changeTags
+   * changeWorkspace
+   * continueTimeEntry
+   * continueExistingTimeEntry
+   * discard
+   * manualyAddTimeEntry
+   * reset
+   * saveTimeEntry
+   * setTimeEntry
+   * start/stopTimeEntry
+   * 
+   * submitDescription
+   * submitStart
+   * submitStop
+   */
+  @computed
+  get timeEntry (): TimeEntryModel {
+    const data: TimeEntryProps = {
+      at: this.startTime,
+      description: this.description,
+      projectId : this.project,
+      start: this.startTime,
+      stop: this.endTime
+    }
+
+    return new TimeEntryModel(data)
+  }
+
+  @action
+  changeDescription (description: string) {
+    this.description = description
+    console.log('DESC:', this.timeEntry)
+  }
+
+  @action
+  changeProject (id: number) {
+    this.project = id
+  }
 
   constructor (store: AppState) {
+    this.appState = store
     runInAction(() => {
       this.isRunning = false
       this.timer = new Timer()
-      this.appState = store
     })
   }
 
   @computed
-  get getStartTime () {
-    return this.startTime ? this.startTime.format('DD/MM/YY HH:mm:ss') : '----'
-  }
+  get getDuration () {
+    if (this.endTime && this.hasStarted && this.endTime > this.startTime) {
+      const start = moment.utc(this.startTime, "HH:mm:ss")
+      const stop = moment.utc(this.endTime, "HH:mm:ss")
+      const v = moment
+      .utc(moment.duration(stop.diff(start), 'milliseconds').asMilliseconds())
+      .format('H:mm:ss')
+      return parseInt(v, 36)
+    }
 
-  @computed
-  get getEndTime () {
-    return this.endTime ? this.endTime.format('DD/MM/YY HH:mm:ss') : '----'
+    return '...'
   }
 
   @action
@@ -33,30 +91,30 @@ export class TimerState {
       return
     }
     this.timer.milliSeconds = moment().diff(this.startTime)
-    setTimeout(() => this.measure(), 10);
+    setTimeout(() => this.measure(), 10)
   }
 
   @action
-  startTimer () {
-    if (this.isRunning) {return}
+  startTimeEntry () {
+    if (this.isRunning || !this.appState.timeTrackingState.currentProject) {
+      return
+    }
     this.isRunning = true
-    this.startTime = moment()
+    this.startTime = moment().format()
     this.measure()
   }
 
   @action
-  setTime (when?: string) {
-    const date = moment()
-    return when ? (this.startTime = date) : (this.endTime = date)
-  }
-
-  @action
-  stopTimer () {
-    this.timer.saveTime()
-    this.endTime = moment()
-    this.isRunning = false
-    const { getCurrentProject, getCurrentActivity } = this.appState.timeTrackingState
-    this.appState.timeTrackingState.addActivity(getCurrentProject, this.getEndTime, getCurrentActivity)
+  stopTimeEntry () {
+    if (this.isRunning === true) {
+      this.timer.saveTime()
+      this.endTime = moment().format()
+      this.isRunning = false
+      
+      // Save TimeEntry on Stop
+      this.appState.timeTrackingState.saveTimeEntry(this.timeEntry)
+    }
+    return
   }
 
   @action
@@ -96,5 +154,19 @@ class Timer {
   get totalSeconds () {
     return this.milliSeconds + this.savedMilliSeconds
   }
-  
+
+  @computed
+  get totalMilliSeconds () {
+    return this.milliSeconds + this.savedMilliSeconds
+  }
+
+  @computed
+  get display () {
+    const v = moment
+      .utc(moment.duration(this.milliSeconds, 'milliseconds').asMilliseconds())
+      .format('H:mm:ss')
+    return v
+
+    // return `${Math.floor(hours)}: ${Math.floor(minutes)} : ${seconds.toFixed()}`
+  }
 }
