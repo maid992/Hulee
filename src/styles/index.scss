@@ -23,8 +23,31 @@
     svg path {
         fill: currentcolor;
     }
-    
+
 }
+ // MaidCustom Styles
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
+
+
+    /* width */
+::-webkit-scrollbar {
+    width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px white; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(243, 11, 61); 
+}
+
+
 
 
 // :global {

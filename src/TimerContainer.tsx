@@ -13,7 +13,7 @@ export class TimerContainer extends React.Component<AppContextProps> {
       <React.Fragment>
         {/* <h2>{this.props.locationState.currentPage}</h2> */}
         <TimerForm />
-        <Layout.Content style={{borderLeft: '5px red'}}>
+        <Layout.Content style={{borderLeft: '5px red', marginTop: '70px'}}>
           <br/>
           <TimeEntriesListContainer />
         </Layout.Content>

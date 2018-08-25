@@ -15,10 +15,9 @@ export class ManagmentApp extends React.Component<AppContextProps> {
     return (
       <Layout>
         {/* <Header>HEADER</Header> */}
-        <Layout>
-          <Content style={{ padding: '0 0', minHeight: '90vh' }}>
-            <Layout style={{ padding: '0 0', background: '#fff' }}>
-              <Sidebar />
+          {/* <Content style={{ padding: '0 0', minHeight: '90vh' }}> */}
+             <Sidebar />
+            <Layout style={{ padding: '0 0', background: '#fff', marginLeft: '180px' }}>
               {/* <div style={{ width: '10px', height: '100vh', background: '#722199' }} /> */}
               <Content
                 style={{
@@ -29,8 +28,7 @@ export class ManagmentApp extends React.Component<AppContextProps> {
                 <TimerContainer />
               </Content>
             </Layout>
-          </Content>
-        </Layout>
+          {/* </Content> */}
       </Layout>
     )
   }

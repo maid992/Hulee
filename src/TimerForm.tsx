@@ -5,6 +5,8 @@ import { Row, Col, Button, Form, Input, Select, Modal, Layout, Popover, Icon } f
 import { Timer } from './Timer'
 import { LabeledValue } from 'antd/lib/select'
 
+import './styles/_timeEntriesListItem.scss'
+
 const Option = Select.Option
 const Content = Layout.Content
 
@@ -71,7 +73,7 @@ export class TimerForm extends React.Component<AppContextProps> {
 
     return (
       <React.Fragment>
-        <Layout style={{ background: '#fff', boxShadow: '0 3px 1px -2px gray' }}>
+        <Layout className="timer-form">
           <Row type="flex" align="middle" justify="end" style={{ height: '70px' }}>
             <Col style={{ flexGrow: 1, flexWrap: 'nowrap' }}>
               <Form layout="inline">
@@ -106,7 +108,12 @@ export class TimerForm extends React.Component<AppContextProps> {
                     trigger="click"
                     content={modalForm}
                   >
-                    <Icon style={{fontSize: '150%'}} className="icon" type="folder-add" title="Create Project" />
+                    <Icon
+                      style={{ fontSize: '150%' }}
+                      className="icon"
+                      type="folder-add"
+                      title="Create Project"
+                    />
                   </Popover>
                 </Col>
                 <Col span={12}>
