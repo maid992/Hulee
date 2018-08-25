@@ -19,19 +19,19 @@ export class Sidebar extends React.Component<AppContextProps> {
 
   render () {
     return (
-      <Sider width={200} style={{ background: '#fff' }}>
+      <Sider theme='dark' width={180}>
         <Menu
           onClick={this.handleClick}
           mode="inline"
           defaultSelectedKeys={[ '1' ]}
           defaultOpenKeys={[ 'sub1' ]}
-          style={{ height: '100%' }}
+          style={{ height: '100%', background: '#722199', color: '#fff', borderRight: '5px' }}
         >
           <SubMenu
             key="sub1"
             title={
               <span>
-                <Icon type="laptop" />Work
+                <Icon type="laptop" />
               </span>
             }
           >
@@ -44,7 +44,7 @@ export class Sidebar extends React.Component<AppContextProps> {
             key="sub2"
             title={
               <span>
-                <Icon type="user" />Profile
+                <Icon type="user" />
               </span>
             }
           >
@@ -55,7 +55,7 @@ export class Sidebar extends React.Component<AppContextProps> {
             key="sub3"
             title={
               <span>
-                <Icon type="notification" />Help
+                <Icon type="notification" />
               </span>
             }
           >

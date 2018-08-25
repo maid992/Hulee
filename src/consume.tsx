@@ -23,6 +23,29 @@ export class Provider extends React.Component<AppContextProps> {
   }
 }
 
+export function consume<ContextProps> (Consumer: React.Consumer<ContextProps>) {
+  return function decorateConsume<T extends React.ComponentClass> (DecoratedComponent: T): T {
+    class DecoratedConsumer extends React.Component {
+      render () {
+        const {children, ...localProps} = this.props;
+        return (
+          <Consumer>
+            {(contextProps) => (
+              <DecoratedComponent {...contextProps} {...localProps}>
+                {children}
+              </DecoratedComponent>
+            )}
+          </Consumer>
+        );
+      }
+    }
+
+    (DecoratedConsumer as any).displayName = DecoratedComponent.displayName || DecoratedComponent.name;
+
+    return DecoratedConsumer as T;
+  };
+}
+
 /**
  * Decorator to form a HOC that acts like a react context consumer.
  * Useful when you want context to be made available in an entire component and not just in render.
@@ -46,26 +69,3 @@ export class Provider extends React.Component<AppContextProps> {
  *   }
  * }
  */
-
-export function consume<ContextProps> (Consumer: React.Consumer<ContextProps>) {
-  return function decorateConsume<T extends React.ComponentClass> (DecoratedComponent: T): T {
-    class DecoratedConsumer extends React.Component {
-      render () {
-        const {children, ...localProps} = this.props;
-        return (
-          <Consumer>
-            {(contextProps) => (
-              <DecoratedComponent {...contextProps} {...localProps}>
-                {children}
-              </DecoratedComponent>
-            )}
-          </Consumer>
-        );
-      }
-    }
-
-    (DecoratedConsumer as any).displayName = DecoratedComponent.displayName || DecoratedComponent.name;
-
-    return DecoratedConsumer as T;
-  };
-}

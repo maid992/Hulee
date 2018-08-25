@@ -4,7 +4,7 @@ import * as React from 'react'
 
 import { AppContext, AppContextProps, consume } from './consume'
 import { Sidebar } from './Sidebar'
-import { TimeTracking } from './TimeTracking'
+import { TimerContainer } from './TimerContainer'
 
 const { Header, Content } = Layout
 
@@ -13,21 +13,20 @@ const { Header, Content } = Layout
 export class ManagmentApp extends React.Component<AppContextProps> {
   render () {
     return (
-      // <Layout style={{ background: 'fff', minHeight: '40vh' }}>
-      //   <Sidebar />
-      //   <Content style={{ width: '100vw' }}>
-      //     <TimeTracking />
-      //   </Content>
-      // </Layout>
-
       <Layout>
-        <Header>HEADER</Header>
+        {/* <Header>HEADER</Header> */}
         <Layout>
-          <Content style={{ padding: '0 50px', minHeight: '80vh' }}>
-            <Layout style={{ padding: '24px 0', background: '#fff' }}>
+          <Content style={{ padding: '0 0', minHeight: '90vh' }}>
+            <Layout style={{ padding: '0 0', background: '#fff' }}>
               <Sidebar />
-              <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                <TimeTracking />
+              {/* <div style={{ width: '10px', height: '100vh', background: '#722199' }} /> */}
+              <Content
+                style={{
+                  padding: '0 0',
+                  minHeight: '100vh'
+                }}
+              >
+                <TimerContainer />
               </Content>
             </Layout>
           </Content>

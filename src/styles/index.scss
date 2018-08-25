@@ -1,6 +1,10 @@
 
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
 @import '_base';
 @import '_table';
+@import '_timeEntriesListItem';
 @import './variables.scss';
 
 :global {
@@ -19,6 +23,7 @@
     svg path {
         fill: currentcolor;
     }
+    
 }
 
 

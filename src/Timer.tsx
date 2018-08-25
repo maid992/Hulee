@@ -1,4 +1,4 @@
-import { Layout, Button, Row, Col } from 'antd'
+import { Layout, Button, Row, Col, Icon } from 'antd'
 import { observer } from 'mobx-react'
 import * as React from 'react'
 
@@ -8,28 +8,32 @@ import { AppContext, AppContextProps, consume } from './consume'
 @observer
 export class Timer extends React.Component<AppContextProps> {
   render () {
-    const { getStartTime, getEndTime, getDuration, isRunning } = this.props.timerState
+    const { isRunning } = this.props.timerState
     return (
-      <Layout style={{ width: '100%' }}>
-        <Row>
+      <Layout style={{ background: '#fff' }}>
+        <Row type="flex" justify="end" align="middle">
           <Col span={12}>
-            <h2>{this.props.timerState.timer.display}</h2>
+            <h2 style={{ margin: '0px 0px', padding: '0 10px' }}>
+              {this.props.timerState.timer.display}
+            </h2>
+          </Col>
+          <Col span={12} style={{ paddingRight: '0px' }}>
             {!isRunning ? (
-              <Button
-                style={{ borderRadius: '30px' }}
+              <Icon
+                style={{ fontSize: '300%' }}
                 onClick={() => this.props.timerState.startTimeEntry()}
-              >
-                START
-              </Button>
+                className="icon"
+                type="play-circle"
+                title="Start Time"
+              />
             ) : (
-              <Button
-                // disabled={!isRunning}
-                style={{ borderRadius: '30px' }}
-                type="danger"
+              <Icon
+                style={{ fontSize: '300%' }}
                 onClick={() => this.props.timerState.stopTimeEntry()}
-              >
-                Log Time
-              </Button>
+                className="icon"
+                type="check-circle"
+                title="Log Time"
+              />
             )}
           </Col>
         </Row>

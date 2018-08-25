@@ -28,7 +28,7 @@
         "object-literal-sort-keys": false,
         "object-literal-shorthand": false,
         "no-default-export": false,
-        "no-implicit-dependencies": false,
+        "no-implicit-dependencies": true,
         "one-variable-per-declaration": false,
         "only-arrow-functions": [true, "allow-declarations"],
         "ordered-imports": false,

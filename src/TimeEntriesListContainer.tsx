@@ -4,7 +4,7 @@ import { observer } from 'mobx-react'
 import moment from 'moment'
 
 import { TimeEntriesList } from './TimeEntriesList'
-import { Row } from 'antd';
+import { Row } from 'antd'
 
 @consumeStore
 @observer
@@ -14,11 +14,11 @@ export class TimeEntriesListContainer extends React.Component<AppContextProps> {
     return (
       <React.Fragment>
         <Row>
-        {timeEntries.map((a) => (
-          <div key={a[1][0].getId}>
-            <TimeEntriesList keys={handleTime(a[0])} listItems={a[1]} />
-          </div>
-        ))}
+          {timeEntries.map((a) => (
+            <div key={a[1][0].getId}>
+              <TimeEntriesList keys={handleTime(a[0])} listItems={a[1]} />
+            </div>
+          ))}
         </Row>
       </React.Fragment>
     )
@@ -26,12 +26,13 @@ export class TimeEntriesListContainer extends React.Component<AppContextProps> {
 }
 
 const handleTime = (time: string): string => {
-  const now = moment()
-  const diff = now.diff(moment.utc(time), 'days')
-  if (diff === 0) {
+  const mTime = moment.utc(time)
+
+  if (mTime.isSame(new Date(), 'day')) {
     return 'Today'
-  } else if (diff === 1) {
+  } else if (mTime.add(1, 'day').isSame(new Date(), 'day')) {
     return 'Yesterday'
-  } 
-  return time
+  }
+
+  return mTime.format('ddd, DD MMM')
 }

@@ -1,4 +1,4 @@
-import { observable, action, computed, runInAction, autorun, reaction } from 'mobx'
+import { observable, action, computed, runInAction } from 'mobx'
 import * as moment from 'moment'
 import { AppState } from './AppState'
 import { TimeEntryProps, TimeEntryModel } from './TimeTrackingStore'
@@ -10,7 +10,7 @@ export class TimerState {
   @observable isRunning: boolean = false
 
   @observable description: string
-  @observable project: number = null
+  @observable project: number
   @observable billable: boolean
   @observable tag: string
 
@@ -39,6 +39,7 @@ export class TimerState {
    * submitStart
    * submitStop
    */
+
   @computed
   get timeEntry (): TimeEntryModel {
     const data: TimeEntryProps = {
@@ -53,9 +54,8 @@ export class TimerState {
   }
 
   @action
-  changeDescription (description: string) {
-    this.description = description
-    console.log('DESC:', this.timeEntry)
+  changeDescription (description?: string) {
+    this.description = description ? description : ''
   }
 
   @action
@@ -69,6 +69,8 @@ export class TimerState {
       this.isRunning = false
       this.timer = new Timer()
     })
+
+    // this.changeDescription()
   }
 
   @computed
@@ -112,7 +114,10 @@ export class TimerState {
       this.isRunning = false
       
       // Save TimeEntry on Stop
-      this.appState.timeTrackingState.saveTimeEntry(this.timeEntry)
+      this.appState.timeTrackingState.timeEntryAdd(this.timeEntry)
+
+      // Clear timeEntry Input
+      // this.changeDescription()
     }
     return
   }

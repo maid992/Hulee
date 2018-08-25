@@ -1,0 +1,33 @@
+.icon {
+  color: rgb(141, 16, 179);
+  transition-duration: 2000;
+  font-size: 18px;
+  padding: 6px 16px;
+  border-radius: 8px;
+}
+.icon:hover {
+  background-color: rgba(183, 19, 224, 0.1);
+  fill-opacity: 20%;
+}
+
+.timeEntryInput {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 90%;
+  border: none;
+  font-size: 150%;
+  padding-left: 20px;
+}
+.ant-form-item-control-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.fontFix {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-weight: 300;
+  color: #222222;
+}
+
+// box-shadow: inset 0 -1px 0 0 #e8e8e8;

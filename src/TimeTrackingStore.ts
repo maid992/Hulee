@@ -2,22 +2,25 @@ import { observable, action, computed, autorun } from 'mobx'
 import { AppState } from './AppState'
 import moment from 'moment'
 import _ from 'lodash'
+import { TimerState } from './TimerState'
 
 type ID = number
 
 export type TimeEntryProps = {
   at?: string
   description?: string
-  projectId?: ID
+  projectId?: number
   start?: string
   stop?: string
 }
 
 export class TimeTrackingStore {
-  @observable projects = new Map<number, ProjectModel>()
-  @observable timeEntries = new Map<number, TimeEntryModel>()
-  @observable currentProject: ID
+  @observable projects = new Map<ID, ProjectModel>()
+  @observable timeEntries = new Map<ID, TimeEntryModel>()
+  @observable currentProject: string
   @observable currentTimeEntry: string
+
+  private timerState: TimerState
 
   /**
    * timeEntryAdd
@@ -27,12 +30,13 @@ export class TimeTrackingStore {
    */
 
   constructor (root: AppState) {
-    // this.timerState = root.timerState
+    this.timerState = root.timerState
 
-    this.projects.set(projekt1.id, projekt1)
-    this.setCurrentProject(projekt1.id)
-    this.timeEntries.set(aktiviti.getId, aktiviti)
-    this.timeEntries.set(aktiviti1.getId, aktiviti1)
+    this.projectAdd('WorkManagmentSite', 33, 'EUR')
+    // this.timeEntries.set(aktiviti.getId, aktiviti)
+    // this.timeEntries.set(aktiviti1.getId, aktiviti1)
+
+    this.currentProject = this.getFirstProject.name
   }
 
   @computed
@@ -52,25 +56,41 @@ export class TimeTrackingStore {
   }
 
   @action
-  addProject (name: string, hRate: number, currency: string) {
+  projectAdd (name: string, hRate: number, currency: string) {
     const project = new ProjectModel(name, hRate, currency)
     this.projects.set(project.id, project)
-    this.currentProject = project.id
+    this.currentProject = project.name
+    this.timerState.changeProject(project.id)
   }
 
   @action
-  setCurrentProject (id: number) {
+  setCurrentProject (id: string) {
     this.currentProject = id
   }
 
   @action
-  saveTimeEntry = (data: TimeEntryModel) => {
+  timeEntryAdd = (data: TimeEntryModel) => {
     if (this.currentProject) {
       this.timeEntries.set(data.getId, data)
     }
     return
   }
 
+  @action
+  timeEntryDelete = (id: ID) => {
+    this.timeEntries.delete(id)
+  }
+
+  @action
+  getProjectById (id: ID) {
+    return this.projects.get(id)
+  }
+
+  @computed
+  get getFirstProject (): ProjectModel {
+    const project = Array.from(this.projects.values()).pop()
+    return project
+  }
   @computed
   get getAllProjects () {
     const projects = Array.from(this.projects.values())
@@ -80,6 +100,7 @@ export class TimeTrackingStore {
   @computed
   get getProjectActivities (): TimeEntryModel[] {
     const acty = Array.from(this.timeEntries.values()).reverse()
+    console.log('LAST_TIME_ENTRY: ', Array.from(this.timeEntries.values()).pop())
     return acty
   }
 }
@@ -127,9 +148,9 @@ export class TimeEntryModel {
   get getId () {
     return this.id
   }
-
+  
   @action
-  changeProject (pid: number) {
+  changeProject (pid: ID) {
     this.projectId = pid
   }
 
@@ -141,8 +162,8 @@ export class TimeEntryModel {
 
   @computed
   get duration (): string {
-    const start = moment.utc(this.start, "HH:mm:ss")
-    const stop = moment.utc(this.stop, "HH:mm:ss")
+    const start = moment.utc(this.start)
+    const stop = moment.utc(this.stop)
     const v = moment
       .utc(moment.duration(stop.diff(start), 'milliseconds').asMilliseconds())
       .format('H:mm:ss')
@@ -152,19 +173,3 @@ export class TimeEntryModel {
 
 // const ID = () => '_' + Math.random().toString(36).substr(2, 9)
 const ID = (): number => parseInt(Math.random().toString().slice(2, 11), 36)
-
-const projekt1 = new ProjectModel('WorkManagmentSite', 33, 'EUR')
-const aktiviti = new TimeEntryModel({
-  at: '2018-08-22T11:25:49+00:00',
-  description: 'FxingNavBar',
-  projectId: 3,
-  start: '22.11',
-  stop: '3'
-})
-const aktiviti1 = new TimeEntryModel({
-  at: '2018-07-19T11:25:49+00:00',
-  description: 'FxingNavBar',
-  projectId: 3,
-  start: '22.11',
-  stop: '3'
-})
