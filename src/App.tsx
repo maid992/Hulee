@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Provider } from './consume'
-import { ManagmentApp } from './ManagmentApp'
-import { AppState } from './AppState'
+import { Provider } from './state/consume'
+import { ManagmentApp } from './views/ManagmentApp'
+import { AppState } from './state/AppState'
 import { observer } from 'mobx-react'
 
 const appState = new AppState()

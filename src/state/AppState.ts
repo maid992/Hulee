@@ -13,6 +13,8 @@ export class AppState {
   //   console.log('XXXXX: ', this.timerState.timeEntry)}
   // )
 
+  this.timeTrackingState.projectAdd('WorkManagmentSite', 33, 'EUR')
+
   this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti1))
   this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti1))
   this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti2))

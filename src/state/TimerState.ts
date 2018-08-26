@@ -45,7 +45,7 @@ export class TimerState {
     const data: TimeEntryProps = {
       at: this.startTime,
       description: this.description,
-      projectId : this.project,
+      projectId: this.project,
       start: this.startTime,
       stop: this.endTime
     }
@@ -73,20 +73,6 @@ export class TimerState {
     // this.changeDescription()
   }
 
-  @computed
-  get getDuration () {
-    if (this.endTime && this.hasStarted && this.endTime > this.startTime) {
-      const start = moment.utc(this.startTime, "HH:mm:ss")
-      const stop = moment.utc(this.endTime, "HH:mm:ss")
-      const v = moment
-      .utc(moment.duration(stop.diff(start), 'milliseconds').asMilliseconds())
-      .format('H:mm:ss')
-      return parseInt(v, 36)
-    }
-
-    return '...'
-  }
-
   @action
   measure () {
     if (!this.isRunning) {
@@ -112,10 +98,9 @@ export class TimerState {
       this.timer.saveTime()
       this.endTime = moment().format()
       this.isRunning = false
-      
+
       // Save TimeEntry on Stop
       this.appState.timeTrackingState.timeEntryAdd(this.timeEntry)
-
       // Clear timeEntry Input
       // this.changeDescription()
     }
@@ -171,7 +156,5 @@ class Timer {
       .utc(moment.duration(this.milliSeconds, 'milliseconds').asMilliseconds())
       .format('H:mm:ss')
     return v
-
-    // return `${Math.floor(hours)}: ${Math.floor(minutes)} : ${seconds.toFixed()}`
   }
 }

@@ -1,7 +1,7 @@
-import { observable, action, computed, autorun } from 'mobx'
+import { observable, action, computed } from 'mobx'
 import { AppState } from './AppState'
-import moment from 'moment'
-import _ from 'lodash'
+import * as moment from 'moment'
+import * as _ from 'lodash'
 import { TimerState } from './TimerState'
 
 type ID = number
@@ -31,17 +31,11 @@ export class TimeTrackingStore {
 
   constructor (root: AppState) {
     this.timerState = root.timerState
-
-    this.projectAdd('WorkManagmentSite', 33, 'EUR')
-    // this.timeEntries.set(aktiviti.getId, aktiviti)
-    // this.timeEntries.set(aktiviti1.getId, aktiviti1)
-
-    this.currentProject = this.getFirstProject.name
   }
 
   @computed
-  get sortedAndGroupedTimeEntries (): TimeEntryModel[] {
-    const grouped = _.groupBy(this.getProjectActivities, 'date')
+  get sortedAndGroupedTimeEntries () {
+    const grouped = _.groupBy(this.getTimeEntries, 'date')
 
     const sortedTimeEntries = []
     for (const entryGroup in grouped) {
@@ -98,9 +92,8 @@ export class TimeTrackingStore {
   }
 
   @computed
-  get getProjectActivities (): TimeEntryModel[] {
+  get getTimeEntries (): TimeEntryModel[] {
     const acty = Array.from(this.timeEntries.values()).reverse()
-    console.log('LAST_TIME_ENTRY: ', Array.from(this.timeEntries.values()).pop())
     return acty
   }
 }
@@ -117,7 +110,7 @@ class ProjectModel {
   @observable name: string
   @observable rate: number
 
-  constructor (name, rate, currency) {
+  constructor (name: string, rate: number, currency: string) {
     this.id = ID()
     this.name = name
     this.rate = rate

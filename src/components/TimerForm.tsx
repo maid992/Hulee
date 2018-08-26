@@ -1,21 +1,21 @@
 import * as React from 'react'
-import { AppContextProps, consumeStore } from './consume'
+import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
 import { Row, Col, Button, Form, Input, Select, Modal, Layout, Popover, Icon } from 'antd'
 import { Timer } from './Timer'
-import { LabeledValue } from 'antd/lib/select'
-
-import './styles/_timeEntriesListItem.scss'
+import { LabeledValue, SelectValue } from 'antd/lib/select'
 
 const Option = Select.Option
 const Content = Layout.Content
+
+// TODO Remove local state
 
 @consumeStore
 @observer
 export class TimerForm extends React.Component<AppContextProps> {
   state = {
     project: '',
-    hourlyRate: null,
+    hourlyRate: 0,
     currency: 'EUR',
     visible: false,
     activity: ''
@@ -40,7 +40,6 @@ export class TimerForm extends React.Component<AppContextProps> {
   onSelectChange = (value: LabeledValue) => {
     this.props.timeTrackingState.setCurrentProject(value.label.toString())
     this.props.timerState.changeProject(parseInt(value.key, 10))
-    console.log(value)
   }
 
   render () {

@@ -1,9 +1,8 @@
-import * as React from 'react'
-// import { Layout, Menu, Icon } from 'antd'
-import { AppContextProps, consumeStore } from './consume'
+import { Button, Col, Icon, Popover, Row } from 'antd'
 import { observer } from 'mobx-react'
-import { TimeEntryModel } from './TimeTrackingStore'
-import { Row, Col, Button, Icon, Popover, Form, Input } from 'antd'
+import * as React from 'react'
+import { AppContextProps, consumeStore } from '../state/consume'
+import { TimeEntryModel } from '../state/TimeTrackingStore'
 
 @consumeStore
 @observer

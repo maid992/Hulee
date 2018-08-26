@@ -27,7 +27,7 @@ export function consume<ContextProps> (Consumer: React.Consumer<ContextProps>) {
   return function decorateConsume<T extends React.ComponentClass> (DecoratedComponent: T): T {
     class DecoratedConsumer extends React.Component {
       render () {
-        const {children, ...localProps} = this.props;
+        const {children, ...localProps} = this.props
         return (
           <Consumer>
             {(contextProps) => (
@@ -36,14 +36,14 @@ export function consume<ContextProps> (Consumer: React.Consumer<ContextProps>) {
               </DecoratedComponent>
             )}
           </Consumer>
-        );
+        )
       }
     }
 
-    (DecoratedConsumer as any).displayName = DecoratedComponent.displayName || DecoratedComponent.name;
+    (DecoratedConsumer as any).displayName = DecoratedComponent.displayName || DecoratedComponent.name
 
-    return DecoratedConsumer as T;
-  };
+    return DecoratedConsumer as T
+  }
 }
 
 /**

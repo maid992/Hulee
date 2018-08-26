@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { AppContextProps, consumeStore } from './consume'
+import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
-import moment from 'moment'
+import { utc } from 'moment'
 
 import { TimeEntriesList } from './TimeEntriesList'
 import { Row } from 'antd'
@@ -26,7 +26,7 @@ export class TimeEntriesListContainer extends React.Component<AppContextProps> {
 }
 
 const handleTime = (time: string): string => {
-  const mTime = moment.utc(time)
+  const mTime = utc(time)
 
   if (mTime.isSame(new Date(), 'day')) {
     return 'Today'

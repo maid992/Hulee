@@ -1,10 +1,10 @@
-import { Layout, Button, Row, Col, Icon } from 'antd'
+import { Layout, Row, Col, Icon } from 'antd'
 import { observer } from 'mobx-react'
 import * as React from 'react'
 
-import { AppContext, AppContextProps, consume } from './consume'
+import { AppContextProps, consumeStore } from '../state/consume'
 
-@consume(AppContext.Consumer)
+@consumeStore
 @observer
 export class Timer extends React.Component<AppContextProps> {
   render () {

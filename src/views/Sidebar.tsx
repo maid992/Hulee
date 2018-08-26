@@ -1,32 +1,32 @@
 import * as React from 'react'
 import { Layout, Menu, Icon } from 'antd'
-import { consume, AppContext, AppContextProps } from './consume'
+import { AppContextProps, consumeStore } from '../state/consume'
+import { observer } from 'mobx-react'
 
 const { SubMenu } = Menu
 const { Sider } = Layout
 
-// {
-//   currentPage?: string,
-//   changePage?: (page: string) => void
-// }
-
-@consume(AppContext.Consumer)
+@consumeStore
+@observer
 export class Sidebar extends React.Component<AppContextProps> {
-  handleClick = (e) => {
+  handleClick = (e: any) => {
     const value = e.item.props.children
     this.props.locationState.changePage(value)
   }
 
   render () {
     return (
-      <Sider theme='dark' style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }} width={180}>
+      <Sider
+        theme="dark"
+        style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}
+        width={180}
+      >
         <Menu
           theme="dark"
           onClick={this.handleClick}
           mode="inline"
           defaultSelectedKeys={[ '1' ]}
           defaultOpenKeys={[ 'sub1' ]}
-          // style={{ height: '100%', background: '#722199', color: '#fff', borderRight: '5px' }}
         >
           <SubMenu
             key="sub1"
