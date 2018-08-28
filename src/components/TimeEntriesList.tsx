@@ -2,7 +2,7 @@ import * as React from 'react'
 import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
 import { TimeEntriesListItem } from './TimeEntriesListItem'
-import { TimeEntryModel } from '../state/TimeTrackingStore'
+import { TimeEntryModel } from '../state/TimeEntryModel'
 import { Row } from 'antd'
 
 @consumeStore
@@ -13,17 +13,19 @@ export class TimeEntriesList extends React.Component<
   render () {
     return (
       <React.Fragment>
-        <Row style={{ paddingBottom: '20px' }}>
-          <span
+        <Row style={{ marginBottom: '40px', backgroundColor: '#fff' }}>
+          <div
             style={{
               margin: '0 0',
-              padding: '0 20px',
+              padding: '0px 20px',
+              paddingTop: '20px',
               fontWeight: 500,
-              color: '#222222'
+              color: '#222222',
+              minHeight: '55px'
             }}
           >
-            {this.props.keys}
-          </span>
+            <span>{this.props.keys}</span>
+          </div>
           <ul style={{ margin: '0 0', padding: '0 5px' }}>
             {this.props.listItems.map((item) => (
               <li style={{ listStyleType: 'none', width: '100%' }} key={item.getId}>
@@ -36,3 +38,11 @@ export class TimeEntriesList extends React.Component<
     )
   }
 }
+
+/*
+Wolfenstein,
+Dishonored,
+Doom,
+DarkSouls,
+Bloodborne
+*/

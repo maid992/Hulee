@@ -22,3 +22,6 @@ export class App extends React.Component {
     )
   }
 }
+
+// tslint:disable-next-line:eofline
+window.state = appState

@@ -15,11 +15,12 @@ export class ManagmentApp extends React.Component<AppContextProps> {
     return (
       <Layout>
         <Sidebar />
-        <Layout style={{ padding: '0 0', background: '#fff', marginLeft: '180px' }}>
+        <Layout style={{ padding: '0 0', background: '#fff', marginLeft: '100px' }}>
           <Content
             style={{
               padding: '0 0',
-              minHeight: '100vh'
+              minHeight: '100vh',
+              backgroundColor: '#f9fbfc'
             }}
           >
             <TimerContainer />

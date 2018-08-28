@@ -1,5 +1,6 @@
 import { observable } from 'mobx'
-import { TimeTrackingStore, TimeEntryModel } from './TimeTrackingStore'
+import { TimeTrackingStore } from './TimeTrackingStore'
+import { TimeEntryModel } from "./TimeEntryModel";
 import { TimerState } from './TimerState';
 
 export class AppState {

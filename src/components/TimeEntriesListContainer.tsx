@@ -15,8 +15,8 @@ export class TimeEntriesListContainer extends React.Component<AppContextProps> {
       <React.Fragment>
         <Row>
           {timeEntries.map((a) => (
-            <div key={a[1][0].getId}>
-              <TimeEntriesList keys={handleTime(a[0])} listItems={a[1]} />
+            <div key={a[0].date}>
+              <TimeEntriesList keys={handleTime(a[0].date)} listItems={a} />
             </div>
           ))}
         </Row>

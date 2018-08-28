@@ -1,7 +1,8 @@
 import { observable, action, computed, runInAction } from 'mobx'
 import * as moment from 'moment'
 import { AppState } from './AppState'
-import { TimeEntryProps, TimeEntryModel } from './TimeTrackingStore'
+import { TimeEntryProps } from './TimeTrackingStore'
+import { TimeEntryModel } from "./TimeEntryModel"
 
 export class TimerState {
   @observable timer: Timer
@@ -33,7 +34,6 @@ export class TimerState {
    * reset
    * saveTimeEntry
    * setTimeEntry
-   * start/stopTimeEntry
    * 
    * submitDescription
    * submitStart
@@ -98,7 +98,6 @@ export class TimerState {
       this.timer.saveTime()
       this.endTime = moment().format()
       this.isRunning = false
-
       // Save TimeEntry on Stop
       this.appState.timeTrackingState.timeEntryAdd(this.timeEntry)
       // Clear timeEntry Input

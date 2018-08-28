@@ -8,26 +8,59 @@
 .icon:hover {
   background-color: rgba(183, 19, 224, 0.1);
   fill-opacity: 20%;
+  cursor: pointer;
 }
+
 
 .timer-form {
   position: fixed;
-  width: calc(100vw - 180px);
+  width: calc(100vw - 90px);
   background-color: #fff;
   box-shadow: 0 3px 5px -2px rgba(117, 117, 117, 0.3);
   height: 70px;
   z-index: 100;
-  
+
+  .timeEntryInput {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 90%;
+    border: none;
+    font-size: 150%;
+    padding-left: 20px;
+  }
+
+  .timeEntryInput:focus {
+    box-shadow: none
+  }
 }
 
-.timeEntryInput {
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 90%;
-  border: none;
-  font-size: 150%;
-  padding-left: 20px;
+.listItem:hover {
+  background-color: #f9fbfc
 }
+
+.datePicker {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  border-color: transparent
+}
+.teProject {
+  padding: 6px 16px;
+  width: auto;
+  display: inline-block;
+  box-shadow: none
+}
+
+.teProject:hover {
+  cursor: pointer;
+  background-color: rgba(183, 19, 224, 0.1);
+  border-radius: 8px;
+}
+
+.teProject:focus {
+  color: red;
+}
+
 .ant-form-item-control-wrapper {
   width: 100%;
   height: 100%;
@@ -39,5 +72,17 @@
   font-weight: 300;
   color: #222222;
 }
+
+.editable {
+  border: none;
+  // border-color: transparent;
+}
+.editable:focus {
+  border: none;
+  outline: none;
+  box-shadow: none
+  // border-color: transparent;
+}
+
 
 // box-shadow: inset 0 -1px 0 0 #e8e8e8;

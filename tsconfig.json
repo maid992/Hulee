@@ -11,7 +11,9 @@
     "moduleResolution": "node",
     "module": "esnext",
     "target": "es2017",
-    "jsx": "react"
+    "jsx": "react",
+
+    "alwaysStrict": true,
   }
 }
 

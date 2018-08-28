@@ -3,10 +3,9 @@ import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
 import { Row, Col, Button, Form, Input, Select, Modal, Layout, Popover, Icon } from 'antd'
 import { Timer } from './Timer'
-import { LabeledValue, SelectValue } from 'antd/lib/select'
+import { LabeledValue } from 'antd/lib/select'
 
 const Option = Select.Option
-const Content = Layout.Content
 
 // TODO Remove local state
 
@@ -53,21 +52,21 @@ export class TimerForm extends React.Component<AppContextProps> {
 
     const modalForm = (
       <Form onSubmit={this.onSubmit} style={{ maxWidth: '250px' }}>
-        <Form.Item {...formItemLayout} label="Project">
-          <Input name="project" value={this.state.project} onChange={this.onChange} />
-        </Form.Item>
-        <Form.Item {...formItemLayout} label="Hourly Rate (Optionally)">
-          <Input
-            name="hourlyRate"
-            value={this.state.hourlyRate}
-            onChange={this.onChange}
-          />
-        </Form.Item>
-        <Button key="back">Cancel</Button>,
-        <Button key="submit" type="primary" onClick={this.onSubmit}>
-          Create New Project
-        </Button>
-      </Form>
+      <Form.Item {...formItemLayout} label="Project">
+        <Input name="project" value={this.state.project} onChange={this.onChange} />
+      </Form.Item>
+      <Form.Item {...formItemLayout} label="Hourly Rate (Optionally)">
+        <Input
+          name="hourlyRate"
+          value={this.state.hourlyRate}
+          onChange={this.onChange}
+        />
+      </Form.Item>
+      <Button key="back">Cancel</Button>,
+      <Button key="submit" type="primary" onClick={this.onSubmit}>
+        Create New Project
+      </Button>
+    </Form>
     )
 
     return (
@@ -77,12 +76,13 @@ export class TimerForm extends React.Component<AppContextProps> {
             <Col style={{ flexGrow: 1, flexWrap: 'nowrap' }}>
               <Form layout="inline">
                 <Input
+                  className="timeEntryInput"
                   name="activity"
                   value={description}
                   placeholder="What are you working on today?"
                   onChange={this.onChange}
-                  className="timeEntryInput"
                   style={{ width: '100%' }}
+                  spellCheck={false}
                 />
               </Form>
             </Col>
@@ -128,22 +128,7 @@ export class TimerForm extends React.Component<AppContextProps> {
             okText="Create Project"
             onCancel={() => this.setState({ visible: false })}
           >
-            <Form onSubmit={this.onSubmit}>
-              <Form.Item {...formItemLayout} label="Project">
-                <Input
-                  name="project"
-                  value={this.state.project}
-                  onChange={this.onChange}
-                />
-              </Form.Item>
-              <Form.Item {...formItemLayout} label="Hourly Rate (Optionally)">
-                <Input
-                  name="hourlyRate"
-                  value={this.state.hourlyRate}
-                  onChange={this.onChange}
-                />
-              </Form.Item>
-            </Form>
+            {modalForm}
           </Modal>
         </Layout>
       </React.Fragment>
