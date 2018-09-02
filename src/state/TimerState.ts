@@ -4,7 +4,7 @@ import { AppState } from './AppState'
 import { TimeEntryProps } from './TimeTrackingStore'
 import { TimeEntryModel } from "./TimeEntryModel"
 
-export class TimerState {
+export class TimerStore {
   @observable timer: Timer
   @observable startTime: string
   @observable endTime: string
@@ -84,7 +84,7 @@ export class TimerState {
 
   @action
   startTimeEntry () {
-    if (this.isRunning || !this.appState.timeTrackingState.currentProject) {
+    if (this.isRunning) {
       return
     }
     this.isRunning = true
@@ -99,7 +99,7 @@ export class TimerState {
       this.endTime = moment().format()
       this.isRunning = false
       // Save TimeEntry on Stop
-      this.appState.timeTrackingState.timeEntryAdd(this.timeEntry)
+      this.appState.timeTrackingStore.timeEntryAdd(this.timeEntry)
       // Clear timeEntry Input
       // this.changeDescription()
     }

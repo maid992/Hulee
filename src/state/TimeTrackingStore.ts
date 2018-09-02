@@ -1,10 +1,10 @@
 import { observable, action, computed } from 'mobx'
 import { AppState } from './AppState'
 import * as moment from 'moment'
-import * as _ from 'lodash'
-import { TimerState } from './TimerState'
-import { TimeEntryModel } from './TimeEntryModel';
-import { ProjectModel } from './ProjectModel';
+import { TimerStore } from './TimerState'
+import { TimeEntryModel } from './TimeEntryModel'
+import { ProjectModel } from './ProjectModel'
+import { groupBy } from '../lib/groupBy'
 
 export type ID = number
 
@@ -16,49 +16,35 @@ export type TimeEntryProps = {
   stop?: string
 }
 
-  /**
-   * timeEntryAdd
-   * timeEntryDelete
-   * timeEntryUpdate
-   * timerContinueTimeEntry
-   */
+/**
+ * timeEntryUpdate
+ * timerContinueTimeEntry
+ */
 
 export class TimeTrackingStore {
   @observable projects = new Map<ID, ProjectModel>()
   @observable timeEntries = new Map<ID, TimeEntryModel>()
   @observable currentProject: string
-  @observable currentTimeEntry: string
 
-  private timerState: TimerState
+  @observable modalVisible: boolean
+  @observable popdowns = new Map<ID, boolean>()
 
+  private timerState: TimerStore
   constructor (root: AppState) {
-    this.timerState = root.timerState
+    this.timerState = root.timerStore
   }
 
   // Computed
 
   @computed
   get sortedAndGroupedTimeEntries (): TimeEntryModel[][] {
-    const grouped = _.groupBy(this.getAllTimeEntries, 'date')
-
-    const timeEntries: TimeEntryModel[][] = []
-
-    for (const entryGroup in grouped) {
-      timeEntries.push([ ...grouped[entryGroup] ])
-    }
-
-    timeEntries.sort((a, b) => {
-      return moment(b[0].date).diff(moment(a[0].date))
-    })
-
-    return timeEntries
+    return groupBy(this.getAllTimeEntries, 'date')
   }
-  
+
   @computed
   get getFirstProject (): ProjectModel {
     const project = Array.from(this.projects.values()).pop()
     return project
-
   }
 
   @computed
@@ -76,6 +62,22 @@ export class TimeTrackingStore {
   // Actions
 
   @action
+  timeEntryGet = (id: ID): TimeEntryModel => {
+    return this.timeEntries.get(id)
+  }
+
+  @action
+  handleModalVisibility = () => {
+    this.modalVisible = !this.modalVisible
+    this.popdowns.forEach((a, b) => this.handlePopdownVisibility(false, b))
+  }
+
+  @action
+  handlePopdownVisibility = (visible: boolean, id: number) => {
+    this.popdowns.set(id, visible)
+  }
+
+  @action
   projectAdd (name: string, hRate: number, currency: string) {
     const project = new ProjectModel(name, hRate, currency)
     this.projects.set(project.id, project)
@@ -90,10 +92,7 @@ export class TimeTrackingStore {
 
   @action
   timeEntryAdd = (data: TimeEntryModel) => {
-    if (this.currentProject) {
-      this.timeEntries.set(data.getId, data)
-    }
-    return
+    this.timeEntries.set(data.getId, data)
   }
 
   @action

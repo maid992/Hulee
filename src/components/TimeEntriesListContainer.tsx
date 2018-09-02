@@ -1,16 +1,17 @@
 import * as React from 'react'
 import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
-import { utc } from 'moment'
-
-import { TimeEntriesList } from './TimeEntriesList'
 import { Row } from 'antd'
+
+import { handleTime } from '../lib/handleTime'
+import { TimeEntriesList } from './TimeEntriesList'
 
 @consumeStore
 @observer
 export class TimeEntriesListContainer extends React.Component<AppContextProps> {
   render () {
-    const timeEntries = this.props.timeTrackingState.sortedAndGroupedTimeEntries
+    const timeEntries = this.props.timeTrackingStore.sortedAndGroupedTimeEntries
+    console.log(timeEntries)
     return (
       <React.Fragment>
         <Row>
@@ -23,16 +24,4 @@ export class TimeEntriesListContainer extends React.Component<AppContextProps> {
       </React.Fragment>
     )
   }
-}
-
-const handleTime = (time: string): string => {
-  const mTime = utc(time)
-
-  if (mTime.isSame(new Date(), 'day')) {
-    return 'Today'
-  } else if (mTime.add(1, 'day').isSame(new Date(), 'day')) {
-    return 'Yesterday'
-  }
-
-  return mTime.format('ddd, DD MMM')
 }

@@ -34,6 +34,7 @@
         "react": "^16.4.1",
         "react-dom": "^16.4.1",
         "react-hot-loader": "^4.2.0",
+        "react-infinite-calendar": "^2.3.1",
         "react-loadable": "^5.4.0",
         "react-router-dom": "^4.2.2"
     },

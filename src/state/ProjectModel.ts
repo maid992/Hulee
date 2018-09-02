@@ -5,7 +5,7 @@ export class ProjectModel {
   @observable active: boolean
   @observable actualHours: number
   @observable at: string
-  @observable color: string
+  @observable color: string = '#a01aa5'
   @observable createdAt: string
   @observable currency: string
   @observable id: ID = ID()

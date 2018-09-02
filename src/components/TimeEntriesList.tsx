@@ -3,7 +3,9 @@ import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
 import { TimeEntriesListItem } from './TimeEntriesListItem'
 import { TimeEntryModel } from '../state/TimeEntryModel'
-import { Row } from 'antd'
+import { Row, Col } from 'antd'
+import * as moment from 'moment'
+import { PopdownContent } from './PopdownContent/PopdownContent'
 
 @consumeStore
 @observer
@@ -11,25 +13,63 @@ export class TimeEntriesList extends React.Component<
   AppContextProps & { listItems?: TimeEntryModel[]; keys?: string }
 > {
   render () {
+    const totalTime: number = this.props.listItems
+      .reduce((a: number[], b: any) => {
+        const s = moment(b.duration, 'H:mm:ss').diff(
+          moment().startOf('day'),
+          'millisecond'
+        )
+        return [ ...a, s ]
+      }, [])
+      .reduce((a: number, b: number) => a + b, 0)
+
+    const totalTimeFormated: string = moment
+      .utc(moment.duration(totalTime, 'milliseconds').asMilliseconds())
+      .format('H:mm:ss')
+
     return (
       <React.Fragment>
-        <Row style={{ marginBottom: '40px', backgroundColor: '#fff' }}>
+        <Row
+          style={{
+            marginBottom: '40px',
+            borderTop: '1px dashed rgba(183, 19, 224, 0.2)',
+            backgroundColor: '#fff',
+            boxShadow: '0 3px 3px -2px #e8e8e8'
+          }}
+        >
           <div
             style={{
               margin: '0 0',
-              padding: '0px 20px',
-              paddingTop: '20px',
-              fontWeight: 500,
+              padding: '20px 0px 20px 25px',
+              fontWeight: 600,
               color: '#222222',
-              minHeight: '55px'
+              minHeight: '55px',
+              flexDirection: 'column',
+              width: '100%'
             }}
           >
-            <span>{this.props.keys}</span>
+            <Col span={6}>{this.props.keys}</Col>
+            <Col
+              style={{
+                width: '100px',
+                marginLeft: 'auto',
+                marginRight: '55px',
+                color: 'darkRed'
+              }}
+            >
+              {totalTimeFormated}
+            </Col>
           </div>
           <ul style={{ margin: '0 0', padding: '0 5px' }}>
             {this.props.listItems.map((item) => (
-              <li style={{ listStyleType: 'none', width: '100%' }} key={item.getId}>
-                <TimeEntriesListItem listItem={item} />
+              <li
+                className="listItem"
+                style={{ listStyleType: 'none', width: '100%' }}
+                key={item.getId}
+              >
+                <TimeEntriesListItem listItem={item}>
+                  {(listItem: TimeEntryModel) => <PopdownContent listItem={listItem} />}
+                </TimeEntriesListItem>
               </li>
             ))}
           </ul>
@@ -38,11 +78,3 @@ export class TimeEntriesList extends React.Component<
     )
   }
 }
-
-/*
-Wolfenstein,
-Dishonored,
-Doom,
-DarkSouls,
-Bloodborne
-*/

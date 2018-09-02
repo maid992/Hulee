@@ -29,6 +29,7 @@ const devPlugins = [
     new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'build/tpl/index.html',
+        favicon: 'src/img/favicon.png',
         inject: true
     }),
 
@@ -39,6 +40,7 @@ const prodPlugins = [
     new HtmlWebpackPlugin({
         filename: config.index,
         template: 'build/tpl/index.html',
+        favicon: 'src/img/favicon.png',
         inject: true,
         minify: {
             removeComments: true,

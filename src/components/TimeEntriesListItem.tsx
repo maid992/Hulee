@@ -1,50 +1,70 @@
-import { Button, Col, Icon, Popover, Row, Input, DatePicker } from 'antd'
+import { Button, Col, Icon, Popover, Row, Input } from 'antd'
 import { observer } from 'mobx-react'
 import * as React from 'react'
+import * as moment from 'moment'
 import { AppContextProps, consumeStore } from '../state/consume'
 import { TimeEntryModel } from '../state/TimeEntryModel'
-import * as moment from 'moment'
+
+// import * as Calendar from 'react-infinite-calendar'
+import 'react-infinite-calendar/styles.css'
+import { ProjectItem } from './ProjectItem/ProjectItem'
+
+type RenderCallback = (args: TimeEntryModel) => JSX.Element
 
 @consumeStore
 @observer
 export class TimeEntriesListItem extends React.Component<
-  AppContextProps & { listItem: TimeEntryModel }
+  AppContextProps & { listItem?: TimeEntryModel; children?: RenderCallback }
 > {
+  hovering: boolean = false
+
+  handleVisibleChange = (visible: boolean) => {
+    this.props.timeTrackingStore.handlePopdownVisibility(
+      visible,
+      this.props.listItem.getId
+    )
+  }
+
   onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const currentTimeEntry = this.props.listItem
     currentTimeEntry.description = e.target.value
 
-    this.props.timeTrackingState.timeEntryAdd(currentTimeEntry)
+    this.props.timeTrackingStore.timeEntryAdd(currentTimeEntry)
+  }
+
+  onProjectSelect = (id: number) => {
+    const currentTimeEntry = this.props.listItem
+    currentTimeEntry.projectId = id
+
+    this.props.timeTrackingStore.timeEntryAdd(currentTimeEntry)
+    this.props.timeTrackingStore.handlePopdownVisibility(false, this.props.listItem.getId)
   }
 
   render () {
-    const pid = this.props.listItem.projectId
-    const project = this.props.timeTrackingState.getProjectById(pid)
-    const projects = this.props.timeTrackingState.getAllProjects
+    const { projectId, description, getId } = this.props.listItem
+    const { popdowns, timeEntryGet } = this.props.timeTrackingStore
+
+    const project = this.props.timeTrackingStore.getProjectById(projectId)
     const projectIconData = project ? project.name : 'No Project'
 
-    const popoverContent = (
-      <React.Fragment>
-        {projects.map((pr) => <p key={pr.id}>{pr.name}</p>)}
-      </React.Fragment>
-    )
+    const popdownVisible = popdowns.get(getId)
+    const popdownContent = this.props.children(this.props.listItem)
 
+    const { start, stop } = timeEntryGet(getId)
+    const startTime = moment(start).format('hh:mm A')
+    const stopTime = moment(stop).format('hh:mm A')
+    
     return (
       <React.Fragment>
-        <Row
-          align="middle"
-          type="flex"
-          style={{ minHeight: '55px', boxShadow: 'inset 0 -1px 0 0 #e8e8e8' }}
-          className="listItem"
-        >
+        <Row align="middle" type="flex" className="listItem">
           <Col
             className="fontFix"
             style={{
-              paddingLeft: '30px',
+              paddingLeft: '10px',
               display: 'inline-block',
-              minWidth: '100px',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden'
+              minWidth: '200px',
+              width: description ? description.length * 7.5 + 50 : '200px',
+              maxWidth: '40%'
             }}
           >
             <Input
@@ -54,52 +74,72 @@ export class TimeEntriesListItem extends React.Component<
               value={this.props.listItem.description}
               placeholder="Add description"
               onChange={this.onChange}
-              style={{backgroundColor: 'transparent'}}
+              style={{ backgroundColor: 'transparent' }}
             />
           </Col>
-          <Col
-            style={{
-              padding: '0 30px',
-              minWidth: '100px',
-              maxWidth: '150px'
-            }}
-            span={4}
-          >
-            <Popover
-              placement="bottom"
-              title="Projects"
-              trigger="click"
-              content={popoverContent}
+          {project ? (
+            <Col
+              style={{
+                padding: '0 10px',
+                flex: '0 0 auto',
+                width: 'auto',
+                color: '#6e5cd1'
+              }}
+              span={4}
             >
-              <div className="teProject">{project ? project.name : `Projectless`}</div>
-            </Popover>
-          </Col>
-          <Col span={4} style={{ marginLeft: 'auto' }}>
-            <Popover
-              placement="bottom"
-              title="Projects"
-              trigger="click"
-              content={popoverContent}
+              <Popover
+                placement="bottom"
+                title="Projects"
+                trigger="click"
+                content={popdownContent}
+                visible={popdownVisible}
+                onVisibleChange={this.handleVisibleChange}
+              >
+                <div className="teProject">
+                  <span style={{ fontSize: '80%', marginRight: '6px' }}>♦</span>
+                  {project.name}
+                </div>
+              </Popover>
+            </Col>
+          ) : (
+            <Col
+              style={{
+                padding: '0 10px',
+                flex: '0 0 auto',
+                width: 'auto'
+              }}
+              span={4}
+              className="iconCol"
             >
-              <Icon className="icon" type="folder" title={projectIconData} />
-            </Popover>
-          </Col>
+              <Popover
+                placement="bottom"
+                title="Projects"
+                trigger="click"
+                content={popdownContent}
+                visible={popdownVisible}
+                onVisibleChange={this.handleVisibleChange}
+              >
+                <Icon className="icon" type="folder" title={projectIconData} />
+              </Popover>
+            </Col>
+          )}
 
-          <Col span={2}>
+          <Col style={{ flex: '0 0 auto', width: '200px', marginLeft: 'auto', color: 'grey' }}>
+            <span>{startTime}</span>
+            {' - '}
+            <span>{stopTime}</span>
+          </Col>
+          <Col style={{ flex: '0 0 auto', width: '100px' }}>
             {this.props.listItem.duration}
           </Col>
-          <Col span={3}>
-            <DatePicker className="datePicker" showTime defaultValue={moment(this.props.listItem.date)} />
-          </Col>
-          <Col span={2}>
-            <Button
-              type="danger"
-              style={{ border: 'none', marginLeft: '10px' }}
+          <Col className="iconCol" style={{ flex: '0 0 auto', width: '50px' }}>
+            <Icon
+              className="icon"
+              type="close"
+              title="Remove Time Entry"
               onClick={() =>
-                this.props.timeTrackingState.timeEntryDelete(this.props.listItem.getId)}
-            >
-              <Icon className="icon" type="close" title="Remove Time Entry" />
-            </Button>
+                this.props.timeTrackingStore.timeEntryDelete(this.props.listItem.getId)}
+            />
           </Col>
         </Row>
       </React.Fragment>

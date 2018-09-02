@@ -15,7 +15,7 @@ export class ManagmentApp extends React.Component<AppContextProps> {
     return (
       <Layout>
         <Sidebar />
-        <Layout style={{ padding: '0 0', background: '#fff', marginLeft: '100px' }}>
+        <Layout style={{ padding: '0 0', background: '#fff', marginLeft: '180px' }}>
           <Content
             style={{
               padding: '0 0',

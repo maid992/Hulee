@@ -1,12 +1,12 @@
 import { observable } from 'mobx'
 import { TimeTrackingStore } from './TimeTrackingStore'
 import { TimeEntryModel } from "./TimeEntryModel";
-import { TimerState } from './TimerState';
+import { TimerStore } from './TimerState';
 
 export class AppState {
   locationState: LocationState = new LocationState()
-  timerState: TimerState = new TimerState(this)
-  timeTrackingState: TimeTrackingStore = new TimeTrackingStore(this)
+  timerStore: TimerStore = new TimerStore(this)
+  timeTrackingStore: TimeTrackingStore = new TimeTrackingStore(this)
 
   constructor () {
   //   reaction(() => this.timerState.description.length, () => {
@@ -14,14 +14,14 @@ export class AppState {
   //   console.log('XXXXX: ', this.timerState.timeEntry)}
   // )
 
-  this.timeTrackingState.projectAdd('WorkManagmentSite', 33, 'EUR')
+  this.timeTrackingStore.projectAdd('WorkManagmentSite', 33, 'EUR')
 
-  this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti1))
-  this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti1))
-  this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti2))
-  this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti1))
-  this.timeTrackingState.timeEntryAdd(new TimeEntryModel(aktiviti2))
-  this.timeTrackingState.timeEntryAdd(aktiviti)
+  this.timeTrackingStore.timeEntryAdd(new TimeEntryModel(aktiviti1))
+  this.timeTrackingStore.timeEntryAdd(new TimeEntryModel(aktiviti1))
+  this.timeTrackingStore.timeEntryAdd(new TimeEntryModel(aktiviti2))
+  this.timeTrackingStore.timeEntryAdd(new TimeEntryModel(aktiviti1))
+  this.timeTrackingStore.timeEntryAdd(new TimeEntryModel(aktiviti2))
+  this.timeTrackingStore.timeEntryAdd(aktiviti)
   }
 }
 
@@ -41,8 +41,8 @@ export class LocationState {
 const aktiviti = new TimeEntryModel({
   at: '2018-08-22T11:25:49+00:00',
   description: 'FxingNavBar',
-  start: '22.11',
-  stop: '3'
+  start: '2018-08-24T22:36:19+02:00',
+  stop: '2018-08-24T23:23:21+02:00'
 })
 const aktiviti1 = {
   at: '2018-07-19T11:25:49+00:00',

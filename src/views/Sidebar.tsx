@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Menu, Icon, Row, Col } from 'antd'
 import { AppContextProps, consumeStore } from '../state/consume'
 import { observer } from 'mobx-react'
 
@@ -22,10 +22,108 @@ export class Sidebar extends React.Component<AppContextProps> {
           height: '100vh',
           position: 'fixed',
           left: 0,
-          width: '100px',
-          backgroundColor: '#8d10b3'
+          width: '180px',
+          backgroundColor: '#333'
         }}
-      />
+      >
+        <a href="https://www.youtube.com/watch?v=Hjwn4QJ0v5U" target="_blank">
+          <div
+            style={{
+              display: 'flex',
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'start',
+              height: '40px',
+              margin: '30px 0 40px 20px'
+            }}
+          >
+            <div style={{ display: 'inline-block', width: '30px' }}>
+              <img
+                style={{
+                  color: '#d6204b',
+                  width: '80%',
+                  padding: '0px 0px 0 0px',
+                  margin: '0 5px 7px 0px'
+                }}
+                className="ant-menu-item icon"
+                src="src/img/favicon.png"
+              />
+            </div>
+            <span
+              style={{
+                fontFamily: 'Baloo',
+                fontSize: '190%',
+                color: '#fff',
+                margin: '0px 0px 0px 5px',
+                padding: '0px 0px 0px 0',
+                height: '38px',
+                width: '100px',
+                display: 'inline-block',
+                letterSpacing: 0.5
+              }}
+            >
+              Hulee
+            </span>
+          </div>
+        </a>
+        <Row
+          type="flex"
+          style={{
+            flexDirection: 'column',
+            alignItems: 'start',
+            marginTop: '20px',
+            color: '#b5b5b5',
+            fontWeight: 600,
+            width: '180px'
+          }}
+        >
+          <Col className="popover-sidebar">
+            <Icon
+              className="icon"
+              style={{ color: 'grey', width: '55px' }}
+              type="tag"
+              title="Start Time"
+            />
+            Projects
+          </Col>
+          <Col className="popover-sidebar">
+            <Icon
+              style={{ color: 'grey', width: '55px' }}
+              className="icon"
+              type="heart"
+              title="Start Time"
+            />
+            Time Tracking
+          </Col>
+          <Col className="popover-sidebar">
+            <Icon
+              style={{ color: 'grey', width: '55px' }}
+              className="icon"
+              type="file"
+              title="Start Time"
+            />
+            Reports
+          </Col>
+          <Col className="popover-sidebar">
+            <Icon
+              style={{ color: 'grey', width: '55px' }}
+              className="icon"
+              type="instagram"
+              title="Start Time"
+            />
+            Dashboard
+          </Col>
+          <Col className="popover-sidebar">
+            <Icon
+              style={{ color: 'grey', width: '55px' }}
+              className="icon"
+              type="youtube"
+              title="Start Time"
+            />
+            Help
+          </Col>
+        </Row>
+      </div>
       // <Sider
       //   theme="dark"
       //   style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}

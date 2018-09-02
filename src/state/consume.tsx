@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { LocationState } from './AppState';
 import { TimeTrackingStore } from './TimeTrackingStore';
-import { TimerState } from './TimerState';
+import { TimerStore } from './TimerState';
 
 export const AppContext = React.createContext({})
 export const consumeStore = consume(AppContext.Consumer)
 
 export type AppContextProps = {
-  timeTrackingState?: TimeTrackingStore,
+  timeTrackingStore?: TimeTrackingStore,
   locationState?: LocationState,
-  timerState?: TimerState
+  timerStore?: TimerStore
 }
 
 export class Provider extends React.Component<AppContextProps> {

@@ -4,12 +4,13 @@
 
 // $prefix                     : "yu";
 
-$primary-color: #720f91;                         // primary color for all components
+// $primary-color: #8811ac;                         // primary color for all components
+$primary-color: #d6204b;                         // primary color for all components
 $link-color: #1890ff;                            // link color
 $success-color: #52c41a;                         // success state color
 $warning-color: #faad14;                         // warning state color
 $error-color: #f5222d;                           // error state color
-$font-size-base: 15px;                           // major text font size
+$font-size-base: 14px;                           // major text font size
 $heading-color: rgba(0, 0, 0, .85);              // heading text color
 $text-color: rgba(0, 0, 0, .65);                 // major text color
 $text-color-secondary : rgba(0, 0, 0, .45);      // secondary text color
@@ -22,7 +23,7 @@ $font-family: "Roboto", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsof
 
 
 // color
-$primary-color              : #720f91;
+// $primary-color              : #720f91;
 // $success-color              : #52c41a;
 // $error-color                : #f5222d;
 // $highlight-color            : #f5222d;
@@ -41,7 +42,7 @@ $primary-color              : #720f91;
 // // font
 // $font-size-base             : 14px;
 $font-size-lg               : $font-size-base + 2px;
-$font-size-sm               : 13px;
+$font-size-sm               : 12px;
 // // font-weight
 $font-weight-base           : 300;
 // // font-color

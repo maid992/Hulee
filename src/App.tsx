@@ -7,9 +7,9 @@ import { observer } from 'mobx-react'
 const appState = new AppState()
 
 const state = {
-  timeTrackingState: appState.timeTrackingState,
+  timeTrackingStore: appState.timeTrackingStore,
   locationState: appState.locationState,
-  timerState: appState.timerState
+  timerStore: appState.timerStore
 }
 
 @observer
@@ -24,4 +24,4 @@ export class App extends React.Component {
 }
 
 // tslint:disable-next-line:eofline
-window.state = appState
+window.state = state
