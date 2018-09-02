@@ -107,13 +107,16 @@
   display: none;
 }
 
-
-
 .teProject {
-  padding: 4px 12px;
+  padding: 1px 10px 0px 1px;
   width: auto;
+  height: 30px;
   display: inline-block;
-  box-shadow: none
+  box-shadow: none;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .teProject:hover {
@@ -146,6 +149,9 @@
 .editable {
   border: none;
   // border-color: transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .editable:focus {

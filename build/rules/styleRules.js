@@ -52,7 +52,7 @@ module.exports = [
         test: /\.css$/,
         include: [resolve('node_modules')],
         use: [
-            config.extractCss ? MiniCssExtractPlugin.loader : 'style-loader',
+            !config.extractCss ? MiniCssExtractPlugin.loader : 'style-loader',
             cacheLoader,
             'css-loader',
             'postcss-loader'
@@ -67,7 +67,7 @@ module.exports = [
         rules: [
             {
                 use: [
-                    config.extractCss ? MiniCssExtractPlugin.loader : 'style-loader',
+                    !config.extractCss ? MiniCssExtractPlugin.loader : 'style-loader',
                     // typingsForCssModulesLoader,
                     'postcss-loader',
                     sassLoader
@@ -94,7 +94,7 @@ module.exports = [
         rules: [
             {
                 use: [
-                    config.extractCss ? MiniCssExtractPlugin.loader : 'style-loader',
+                    !config.extractCss ? MiniCssExtractPlugin.loader : 'style-loader',
                     'css-loader',
                     'postcss-loader',
                     lessLoader

@@ -31,8 +31,8 @@ export class TimeEntriesList extends React.Component<
       <React.Fragment>
         <Row
           style={{
-            marginBottom: '40px',
-            borderTop: '1px dashed rgba(183, 19, 224, 0.2)',
+            marginTop: '40px',
+            borderTop: '1px solid rgba(103, 209, 124, 0.8)',
             backgroundColor: '#fff',
             boxShadow: '0 3px 3px -2px #e8e8e8'
           }}
@@ -40,10 +40,10 @@ export class TimeEntriesList extends React.Component<
           <div
             style={{
               margin: '0 0',
-              padding: '20px 0px 20px 25px',
+              padding: '12px 0px 0px 25px',
               fontWeight: 600,
               color: '#222222',
-              minHeight: '55px',
+              minHeight: '40px',
               flexDirection: 'column',
               width: '100%'
             }}
@@ -54,7 +54,7 @@ export class TimeEntriesList extends React.Component<
                 width: '100px',
                 marginLeft: 'auto',
                 marginRight: '55px',
-                color: 'darkRed'
+                color: 'black'
               }}
             >
               {totalTimeFormated}

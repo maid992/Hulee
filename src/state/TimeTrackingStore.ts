@@ -91,8 +91,8 @@ export class TimeTrackingStore {
   }
 
   @action
-  timeEntryAdd = (data: TimeEntryModel) => {
-    this.timeEntries.set(data.getId, data)
+   timeEntryAdd = (data: TimeEntryModel) => {
+   this.timeEntries.set(data.getId, data)
   }
 
   @action

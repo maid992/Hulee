@@ -44,7 +44,7 @@ export class Timer extends React.Component<AppContextProps> {
           <Col style={{ paddingRight: '0px', width: '70px' }}>
             {!isRunning ? (
               <Icon
-                style={{ fontSize: '300%', marginRight: '10px' }}
+                style={{ fontSize: '300%', marginRight: '10px', color: 'cornFlowerBlue'}}
                 onClick={() => this.props.timerStore.startTimeEntry()}
                 className="icon"
                 type="play-circle"

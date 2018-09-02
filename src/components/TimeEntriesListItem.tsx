@@ -53,7 +53,7 @@ export class TimeEntriesListItem extends React.Component<
     const { start, stop } = timeEntryGet(getId)
     const startTime = moment(start).format('hh:mm A')
     const stopTime = moment(stop).format('hh:mm A')
-    
+
     return (
       <React.Fragment>
         <Row align="middle" type="flex" className="listItem">
@@ -64,7 +64,7 @@ export class TimeEntriesListItem extends React.Component<
               display: 'inline-block',
               minWidth: '200px',
               width: description ? description.length * 7.5 + 50 : '200px',
-              maxWidth: '40%'
+              maxWidth: '42%'
             }}
           >
             <Input
@@ -96,7 +96,17 @@ export class TimeEntriesListItem extends React.Component<
                 onVisibleChange={this.handleVisibleChange}
               >
                 <div className="teProject">
-                  <span style={{ fontSize: '80%', marginRight: '6px' }}>♦</span>
+                  <span>
+                    <img
+                      style={{
+                        height: '30px',
+                        width: '30px',
+                        marginBottom: '3px',
+                        // display: 'inline-block'
+                      }}
+                      src="src/img/bullet.svg"
+                    />
+                  </span>
                   {project.name}
                 </div>
               </Popover>
@@ -124,7 +134,14 @@ export class TimeEntriesListItem extends React.Component<
             </Col>
           )}
 
-          <Col style={{ flex: '0 0 auto', width: '200px', marginLeft: 'auto', color: 'grey' }}>
+          <Col
+            style={{
+              flex: '0 0 auto',
+              width: '200px',
+              marginLeft: 'auto',
+              color: 'grey'
+            }}
+          >
             <span>{startTime}</span>
             {' - '}
             <span>{stopTime}</span>

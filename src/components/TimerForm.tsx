@@ -81,7 +81,7 @@ export class TimerForm extends React.Component<
     })
 
     const modalForm = (
-      <Form onSubmit={this.onSubmit} style={{ maxWidth: '200px' }}>
+      <Form onSubmit={this.onSubmit} style={{ maxWidth: '2000px' }}>
         <Form.Item {...formItemLayout} label="Project">
           <Input name="project" value={this.state.project} onChange={this.onChange} />
         </Form.Item>
@@ -127,7 +127,8 @@ export class TimerForm extends React.Component<
                 minWidth: '50px',
                 display: 'inline-block',
                 color: '#6e5cd1',
-                height: '35px'
+                height: '35px',
+                marginTop: '5px'
               }}
             >
               <Popover
@@ -178,11 +179,11 @@ export class TimerForm extends React.Component<
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 12 },
-    sm: { span: 18 }
+    xs: { span: 18 },
+    sm: { span: 5 }
   },
   wrapperCol: {
     xs: { span: 18 },
-    sm: { span: 12 }
+    sm: { span: 6 }
   }
 }

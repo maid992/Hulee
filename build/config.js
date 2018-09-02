@@ -6,8 +6,8 @@ const constants = require('./constants')
 const STATICDOMAIN = constants.APP_ENV === 'prod' ? '.' : ''
 
 module.exports = {
-    index: path.resolve(__dirname, `./../dist/${constants.APP_ENV}/index.html`),
-    assetsRoot: path.resolve(__dirname, `./../dist/${constants.APP_ENV}`),
+    index: path.resolve(__dirname, `./../docs/${constants.APP_ENV}/index.html`),
+    assetsRoot: path.resolve(__dirname, `./../docs/${constants.APP_ENV}`),
     assetsPublicPath: constants.APP_ENV === 'dev' ? '/' : `${STATICDOMAIN}/`,
     assetsSubDirectory: 'static',
     // 正式环境接入sentry需要sourceMap
